@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+ margin:0;
+ font-family:'Poppins',sans-serif;
+ background:#f5f7fb;
+}
+
+.grid{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+ gap:16px;
+ padding:16px;
+}
+
+.card{
+ background:#fff;
+ border-radius:12px;
+ padding:16px;
+ box-shadow:0 4px 12px rgba(0,0,0,0.08);
+ transition:0.3s;
+}
+
+.card:hover{
+ transform:translateY(-5px);
+}
+
+h3{
+ color:#0d47a1;
+ font-size:16px;
+ margin-bottom:8px;
+}
+
+.badge{
+ background:red;
+ color:#fff;
+ padding:2px 6px;
+ border-radius:4px;
+ font-size:10px;
+ margin-left:5px;
+}
+
+ul{
+ padding-left:18px;
+ font-size:13px;
+}
+
+p{
+ font-size:13px;
+}
+</style>
+
+</head>
+<body>
+
+<div class="grid">
+
+<div class="card">
+<h3>📢 Latest Updates <span class="badge">LIVE</span></h3>
+<ul id="news">Loading...</ul>
+</div>
+
+<div class="card">
+<h3>🏆 Motivation</h3>
+<p id="quote">Loading...</p>
+</div>
+
+<div class="card">
+<h3>📘 Study Tip</h3>
+<p id="tip">Loading...</p>
+</div>
+
+<div class="card">
+<h3>MHT-CET</h3>
+<p>State-level entrance exam for Engineering & Pharmacy.</p>
+</div>
+
+<div class="card">
+<h3>JEE</h3>
+<p>India’s top engineering entrance exam.</p>
+</div>
+
+<div class="card">
+<h3>NEET</h3>
+<p>Medical entrance exam for MBBS/BDS.</p>
+</div>
+
+</div>
+
+<script>
+// NEWS
+fetch("https://newsapi.org/v2/top-headlines?country=in&category=education&apiKey=cb4b8bf9ae25437ba606f26fa46b9cc7")
+.then(res=>res.json())
+.then(data=>{
+ let html="";
+ data.articles.slice(0,5).forEach(n=>{
+  html+=`<li>${n.title}</li>`;
+ });
+ document.getElementById("news").innerHTML=html;
+})
+.catch(()=>{
+ document.getElementById("news").innerHTML="<li>Unable to load news</li>";
+});
+
+// MOTIVATION
+fetch("https://api.quotable.io/random")
+.then(res=>res.json())
+.then(data=>{
+ document.getElementById("quote").innerText=`"${data.content}" — ${data.author}`;
+});
+
+// STUDY TIP
+fetch("https://api.adviceslip.com/advice")
+.then(res=>res.json())
+.then(data=>{
+ document.getElementById("tip").innerText=data.slip.advice;
+});
+</script>
+
+</body>
+</html>
